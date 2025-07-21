@@ -6120,7 +6120,7 @@ cfg_if! {
         any(target_env = "gnu", target_env = "musl", target_env = "ohos"),
         any(target_arch = "x86_64", target_arch = "x86")
     ))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn iopl(level: c_int) -> c_int;
             pub fn ioperm(from: c_ulong, num: c_ulong, turn_on: c_int) -> c_int;
         }
@@ -6129,7 +6129,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(all(not(target_env = "uclibc"), not(target_env = "ohos")))] {
-        extern "C" {
+        unsafe extern "C" {
             #[cfg_attr(gnu_file_offset_bits64, link_name = "aio_read64")]
             pub fn aio_read(aiocbp: *mut aiocb) -> c_int;
             #[cfg_attr(gnu_file_offset_bits64, link_name = "aio_write64")]
@@ -6160,7 +6160,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(not(target_env = "uclibc"))] {
-        extern "C" {
+        unsafe extern "C" {
             #[cfg_attr(gnu_file_offset_bits64, link_name = "pwritev64")]
             pub fn pwritev(
                 fd: c_int,
@@ -6210,7 +6210,7 @@ cfg_if! {
 // These functions are not available on OpenHarmony
 cfg_if! {
     if #[cfg(not(target_env = "ohos"))] {
-        extern "C" {
+        unsafe extern "C" {
             // Only `getspnam_r` is implemented for musl, out of all of the reenterant
             // functions from `shadow.h`.
             // https://git.musl-libc.org/cgit/musl/tree/include/shadow.h
@@ -6274,7 +6274,7 @@ cfg_if! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     #[cfg_attr(
         not(any(target_env = "musl", target_env = "ohos")),
         link_name = "__xpg_strerror_r"
@@ -6921,7 +6921,7 @@ extern "C" {
 // * musl has 64-bit versions only so aliases the LFS64 symbols to the standard ones
 cfg_if! {
     if #[cfg(not(target_env = "musl"))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn fallocate64(fd: c_int, mode: c_int, offset: off64_t, len: off64_t) -> c_int;
             pub fn fgetpos64(stream: *mut crate::FILE, ptr: *mut fpos64_t) -> c_int;
             pub fn fopen64(filename: *const c_char, mode: *const c_char) -> *mut crate::FILE;

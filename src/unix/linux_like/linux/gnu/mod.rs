@@ -838,8 +838,8 @@ pub const PTRACE_SYSCALL_INFO_NONE: crate::__u8 = 0;
 pub const PTRACE_SYSCALL_INFO_ENTRY: crate::__u8 = 1;
 pub const PTRACE_SYSCALL_INFO_EXIT: crate::__u8 = 2;
 pub const PTRACE_SYSCALL_INFO_SECCOMP: crate::__u8 = 3;
-pub const PTRACE_SET_SYSCALL_USER_DISPATCH_CONFIG: crate::__u8 = 0x4210;
-pub const PTRACE_GET_SYSCALL_USER_DISPATCH_CONFIG: crate::__u8 = 0x4211;
+pub const PTRACE_SET_SYSCALL_USER_DISPATCH_CONFIG: crate::__u16 = 0x4210;
+pub const PTRACE_GET_SYSCALL_USER_DISPATCH_CONFIG: crate::__u16 = 0x4211;
 
 // linux/rtnetlink.h
 pub const TCA_PAD: c_ushort = 9;
@@ -1048,7 +1048,7 @@ pub const REG_EEND: c_int = 14;
 pub const REG_ESIZE: c_int = 15;
 pub const REG_ERPAREN: c_int = 16;
 
-extern "C" {
+unsafe extern "C" {
     pub fn fgetspent_r(
         fp: *mut crate::FILE,
         spbuf: *mut crate::spwd,

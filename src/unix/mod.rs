@@ -388,7 +388,7 @@ cfg_if! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub static in6addr_loopback: in6_addr;
     pub static in6addr_any: in6_addr;
 }
@@ -580,7 +580,7 @@ missing! {
     pub enum FILE {}
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn isalnum(c: c_int) -> c_int;
     pub fn isalpha(c: c_int) -> c_int;
     pub fn iscntrl(c: c_int) -> c_int;
@@ -731,7 +731,7 @@ extern "C" {
     pub fn memccpy(dest: *mut c_void, src: *const c_void, c: c_int, n: size_t) -> *mut c_void;
 }
 
-extern "C" {
+unsafe extern "C" {
     #[cfg_attr(target_os = "netbsd", link_name = "__getpwnam50")]
     pub fn getpwnam(name: *const c_char) -> *mut passwd;
     #[cfg_attr(target_os = "netbsd", link_name = "__getpwuid50")]
@@ -1639,7 +1639,7 @@ cfg_if! {
         target_os = "cygwin",
         target_os = "aix",
     )))] {
-        extern "C" {
+        unsafe extern "C" {
             #[cfg_attr(gnu_time_bits64, link_name = "__adjtime64")]
             pub fn adjtime(delta: *const timeval, olddelta: *mut timeval) -> c_int;
         }
@@ -1656,7 +1656,7 @@ cfg_if! {
         target_os = "android",
         target_os = "nto"
     )))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn stpncpy(dst: *mut c_char, src: *const c_char, n: size_t) -> *mut c_char;
         }
     }
@@ -1664,7 +1664,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(not(target_os = "android"))] {
-        extern "C" {
+        unsafe extern "C" {
             #[cfg_attr(
                 all(target_os = "macos", target_arch = "x86"),
                 link_name = "confstr$UNIX2003"
@@ -1677,7 +1677,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(not(target_os = "aix"))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn dladdr(addr: *const c_void, info: *mut Dl_info) -> c_int;
         }
     }
@@ -1685,7 +1685,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(not(target_os = "solaris"))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn flock(fd: c_int, operation: c_int) -> c_int;
         }
     }
@@ -1693,7 +1693,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(not(any(target_env = "uclibc", target_os = "nto")))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn open_wmemstream(ptr: *mut *mut wchar_t, sizeloc: *mut size_t) -> *mut FILE;
         }
     }
@@ -1701,7 +1701,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(not(target_os = "redox"))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn getsid(pid: pid_t) -> pid_t;
             #[cfg_attr(
                 all(target_os = "macos", target_arch = "x86"),
@@ -1771,7 +1771,7 @@ cfg_if! {
                 -> c_int;
         }
     } else {
-        extern "C" {
+        unsafe extern "C" {
             pub fn readlinkat(
                 dirfd: c_int,
                 pathname: *const c_char,
@@ -1818,14 +1818,14 @@ cfg_if! {
         target_os = "illumos",
         target_os = "nto",
     )))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn cfmakeraw(termios: *mut crate::termios);
             pub fn cfsetspeed(termios: *mut crate::termios, speed: crate::speed_t) -> c_int;
         }
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn fnmatch(pattern: *const c_char, name: *const c_char, flags: c_int) -> c_int;
 }
 
