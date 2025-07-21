@@ -5907,7 +5907,7 @@ f! {
         return ((len) + NLA_ALIGNTO - 1) & !(NLA_ALIGNTO - 1);
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr { unsafe {
         if ((*cmsg).cmsg_len as usize) < size_of::<cmsghdr>() {
             return core::ptr::null_mut::<cmsghdr>();
         }
@@ -5920,13 +5920,13 @@ f! {
         } else {
             next
         }
-    }
+    }}
 
-    pub fn CPU_ALLOC_SIZE(count: c_int) -> size_t {
+    pub fn CPU_ALLOC_SIZE(count: c_int) -> size_t { unsafe {
         let _dummy: cpu_set_t = mem::zeroed();
         let size_in_bits = 8 * mem::size_of_val(&_dummy.bits[0]);
         ((count as size_t + size_in_bits - 1) / 8) as size_t
-    }
+    }}
 
     pub fn CPU_ZERO(cpuset: &mut cpu_set_t) -> () {
         for slot in &mut cpuset.bits {
@@ -5961,9 +5961,9 @@ f! {
         s as c_int
     }
 
-    pub fn CPU_COUNT(cpuset: &cpu_set_t) -> c_int {
+    pub fn CPU_COUNT(cpuset: &cpu_set_t) -> c_int { unsafe {
         CPU_COUNT_S(size_of::<cpu_set_t>(), cpuset)
-    }
+    }}
 
     pub fn CPU_EQUAL(set1: &cpu_set_t, set2: &cpu_set_t) -> bool {
         set1.bits == set2.bits
@@ -6002,9 +6002,9 @@ f! {
         (flags & RTF_ADDRCLASSMASK) == (RTF_LOCAL | RTF_INTERFACE)
     }
 
-    pub fn SO_EE_OFFENDER(ee: *const crate::sock_extended_err) -> *mut crate::sockaddr {
+    pub fn SO_EE_OFFENDER(ee: *const crate::sock_extended_err) -> *mut crate::sockaddr { unsafe {
         ee.offset(1) as *mut crate::sockaddr
-    }
+    }}
 
     pub fn TPACKET_ALIGN(x: usize) -> usize {
         (x + TPACKET_ALIGNMENT - 1) & !(TPACKET_ALIGNMENT - 1)

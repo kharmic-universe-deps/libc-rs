@@ -374,7 +374,7 @@ s! {
 }
 
 impl siginfo_t {
-    pub unsafe fn si_addr(&self) -> *mut c_void {
+    pub unsafe fn si_addr(&self) -> *mut c_void { unsafe {
         #[repr(C)]
         struct siginfo_sigfault {
             _si_signo: c_int,
@@ -383,9 +383,9 @@ impl siginfo_t {
             si_addr: *mut c_void,
         }
         (*(self as *const siginfo_t).cast::<siginfo_sigfault>()).si_addr
-    }
+    }}
 
-    pub unsafe fn si_value(&self) -> crate::sigval {
+    pub unsafe fn si_value(&self) -> crate::sigval { unsafe {
         #[repr(C)]
         struct siginfo_timer {
             _si_signo: c_int,
@@ -396,7 +396,7 @@ impl siginfo_t {
             si_sigval: crate::sigval,
         }
         (*(self as *const siginfo_t).cast::<siginfo_timer>()).si_sigval
-    }
+    }}
 }
 
 // Internal, for casts to access union fields
@@ -432,29 +432,29 @@ struct siginfo_f {
 }
 
 impl siginfo_t {
-    unsafe fn sifields(&self) -> &sifields {
+    unsafe fn sifields(&self) -> &sifields { unsafe {
         &(*(self as *const siginfo_t).cast::<siginfo_f>()).sifields
-    }
+    }}
 
-    pub unsafe fn si_pid(&self) -> crate::pid_t {
+    pub unsafe fn si_pid(&self) -> crate::pid_t { unsafe {
         self.sifields().sigchld.si_pid
-    }
+    }}
 
-    pub unsafe fn si_uid(&self) -> crate::uid_t {
+    pub unsafe fn si_uid(&self) -> crate::uid_t { unsafe {
         self.sifields().sigchld.si_uid
-    }
+    }}
 
-    pub unsafe fn si_status(&self) -> c_int {
+    pub unsafe fn si_status(&self) -> c_int { unsafe {
         self.sifields().sigchld.si_status
-    }
+    }}
 
-    pub unsafe fn si_utime(&self) -> c_long {
+    pub unsafe fn si_utime(&self) -> c_long { unsafe {
         self.sifields().sigchld.si_utime
-    }
+    }}
 
-    pub unsafe fn si_stime(&self) -> c_long {
+    pub unsafe fn si_stime(&self) -> c_long { unsafe {
         self.sifields().sigchld.si_stime
-    }
+    }}
 }
 
 s_no_extra_traits! {
