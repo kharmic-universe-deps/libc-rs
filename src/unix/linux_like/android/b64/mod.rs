@@ -18,7 +18,7 @@ s! {
         pub sa_flags: c_int,
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     pub struct rlimit64 {
@@ -267,7 +267,7 @@ f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn __system_property_wait(
         pi: *const crate::prop_info,
         __old_serial: u32,

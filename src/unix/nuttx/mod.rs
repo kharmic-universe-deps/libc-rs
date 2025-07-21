@@ -565,7 +565,7 @@ pub const IP_MULTICAST_TTL: i32 = 0x12;
 pub const IP_ADD_MEMBERSHIP: i32 = 0x14;
 pub const IP_DROP_MEMBERSHIP: i32 = 0x15;
 
-extern "C" {
+unsafe extern "C" {
     pub fn bind(sockfd: i32, addr: *const sockaddr, addrlen: socklen_t) -> i32;
     pub fn ioctl(fd: i32, request: i32, ...) -> i32;
     pub fn dirfd(dirp: *mut DIR) -> i32;
@@ -581,7 +581,7 @@ extern "C" {
     pub fn pthread_create(
         thread: *mut pthread_t,
         attr: *const pthread_attr_t,
-        start_routine: extern "C" fn(*mut c_void) -> *mut c_void,
+        start_routine: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         arg: *mut c_void,
     ) -> i32;
 

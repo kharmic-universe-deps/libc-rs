@@ -129,8 +129,8 @@ pub type thread_throughput_qos_policy_data_t = thread_throughput_qos_policy;
 pub type thread_throughput_qos_policy_t = *mut thread_throughput_qos_policy;
 
 pub type pthread_introspection_hook_t =
-    extern "C" fn(event: c_uint, thread: crate::pthread_t, addr: *mut c_void, size: size_t);
-pub type pthread_jit_write_callback_t = Option<extern "C" fn(ctx: *mut c_void) -> c_int>;
+    unsafe extern "C" fn(event: c_uint, thread: crate::pthread_t, addr: *mut c_void, size: size_t);
+pub type pthread_jit_write_callback_t = Option<unsafe extern "C" fn(ctx: *mut c_void) -> c_int>;
 
 pub type os_clockid_t = u32;
 
@@ -162,7 +162,7 @@ pub type CCRNGStatus = crate::CCCryptorStatus;
 pub type copyfile_state_t = *mut c_void;
 pub type copyfile_flags_t = u32;
 pub type copyfile_callback_t = Option<
-    extern "C" fn(
+    unsafe extern "C" fn(
         c_int,
         c_int,
         copyfile_state_t,
@@ -5267,7 +5267,7 @@ safe_f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn setgrent();
     #[doc(hidden)]
     #[deprecated(since = "0.2.49", note = "Deprecated in MacOSX 10.5")]
@@ -5428,7 +5428,7 @@ extern "C" {
     pub fn pthread_create_from_mach_thread(
         thread: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn pthread_stack_frame_decode_np(
@@ -6173,7 +6173,7 @@ pub unsafe fn mach_task_self() -> crate::mach_port_t {
 
 cfg_if! {
     if #[cfg(target_os = "macos")] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn clock_settime(clock_id: crate::clockid_t, tp: *const crate::timespec) -> c_int;
         }
     }
@@ -6185,7 +6185,7 @@ cfg_if! {
         target_os = "tvos",
         target_os = "visionos"
     ))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn memmem(
                 haystack: *const c_void,
                 haystacklen: size_t,
@@ -6207,7 +6207,7 @@ cfg_if! {
 // modifier to only include these if they are used, but we do not.
 #[deprecated(note = "Will be removed in 1.0 to avoid the `iconv` dependency")]
 #[cfg_attr(not(feature = "rustc-dep-of-std"), link(name = "iconv"))]
-extern "C" {
+unsafe extern "C" {
     pub fn iconv_open(tocode: *const c_char, fromcode: *const c_char) -> iconv_t;
     pub fn iconv(
         cd: iconv_t,

@@ -1495,7 +1495,7 @@ safe_f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn sem_destroy(sem: *mut sem_t) -> c_int;
     pub fn sem_init(sem: *mut sem_t, pshared: c_int, value: c_uint) -> c_int;
 
@@ -1874,7 +1874,7 @@ extern "C" {
 }
 
 #[link(name = "rt")]
-extern "C" {
+unsafe extern "C" {
     pub fn mq_close(mqd: crate::mqd_t) -> c_int;
     pub fn mq_getattr(mqd: crate::mqd_t, attr: *mut crate::mq_attr) -> c_int;
     pub fn mq_notify(mqd: crate::mqd_t, notification: *const crate::sigevent) -> c_int;
@@ -1917,7 +1917,7 @@ extern "C" {
 }
 
 #[link(name = "util")]
-extern "C" {
+unsafe extern "C" {
     pub fn openpty(
         amaster: *mut c_int,
         aslave: *mut c_int,
@@ -1942,14 +1942,14 @@ extern "C" {
 }
 
 #[link(name = "execinfo")]
-extern "C" {
+unsafe extern "C" {
     pub fn backtrace(addrlist: *mut *mut c_void, len: size_t) -> size_t;
     pub fn backtrace_symbols(addrlist: *const *mut c_void, len: size_t) -> *mut *mut c_char;
     pub fn backtrace_symbols_fd(addrlist: *const *mut c_void, len: size_t, fd: c_int) -> c_int;
 }
 
 #[link(name = "kvm")]
-extern "C" {
+unsafe extern "C" {
     pub fn kvm_open(
         execfile: *const c_char,
         corefile: *const c_char,

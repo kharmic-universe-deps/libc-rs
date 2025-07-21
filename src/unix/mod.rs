@@ -476,7 +476,7 @@ cfg_if! {
         #[link(name = "m", cfg(not(target_feature = "crt-static")))]
         #[link(name = "dl", cfg(not(target_feature = "crt-static")))]
         #[link(name = "c", cfg(not(target_feature = "crt-static")))]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(any(target_env = "musl", target_env = "ohos"))] {
         #[cfg_attr(
             feature = "rustc-dep-of-std",
@@ -491,7 +491,7 @@ cfg_if! {
             feature = "rustc-dep-of-std",
             link(name = "c", cfg(not(target_feature = "crt-static")))
         )]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(target_os = "emscripten")] {
         // Don't pass -lc to Emscripten, it breaks. See:
         // https://github.com/emscripten-core/emscripten/issues/22758
@@ -510,7 +510,7 @@ cfg_if! {
         )]
         #[link(name = "m", cfg(not(target_feature = "crt-static")))]
         #[link(name = "c", cfg(not(target_feature = "crt-static")))]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(any(
         target_os = "macos",
         target_os = "ios",
@@ -523,19 +523,19 @@ cfg_if! {
     ))] {
         #[link(name = "c")]
         #[link(name = "m")]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(target_os = "haiku")] {
         #[link(name = "root")]
         #[link(name = "network")]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(target_env = "newlib")] {
         #[link(name = "c")]
         #[link(name = "m")]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(target_env = "illumos")] {
         #[link(name = "c")]
         #[link(name = "m")]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(target_os = "redox")] {
         #[cfg_attr(
             feature = "rustc-dep-of-std",
@@ -550,19 +550,19 @@ cfg_if! {
             feature = "rustc-dep-of-std",
             link(name = "c", cfg(not(target_feature = "crt-static")))
         )]
-        extern "C" {}
+        unsafe extern "C" {}
     } else if #[cfg(target_os = "aix")] {
         #[link(name = "c")]
         #[link(name = "m")]
         #[link(name = "bsd")]
         #[link(name = "pthread")]
-        extern "C" {}
+        unsafe extern "C" {}
     } else {
         #[link(name = "c")]
         #[link(name = "m")]
         #[link(name = "rt")]
         #[link(name = "pthread")]
-        extern "C" {}
+        unsafe extern "C" {}
     }
 }
 
@@ -1644,7 +1644,7 @@ cfg_if! {
             pub fn adjtime(delta: *const timeval, olddelta: *mut timeval) -> c_int;
         }
     } else if #[cfg(target_os = "solaris")] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn adjtime(delta: *mut timeval, olddelta: *mut timeval) -> c_int;
         }
     }
@@ -1751,7 +1751,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(target_os = "nto")] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn readlinkat(
                 dirfd: c_int,
                 pathname: *const c_char,
@@ -1780,7 +1780,7 @@ cfg_if! {
             ) -> ssize_t;
             pub fn fmemopen(buf: *mut c_void, size: size_t, mode: *const c_char) -> *mut FILE;
             pub fn open_memstream(ptr: *mut *mut c_char, sizeloc: *mut size_t) -> *mut FILE;
-            pub fn atexit(cb: extern "C" fn()) -> c_int;
+            pub fn atexit(cb: unsafe extern "C" fn()) -> c_int;
             #[cfg_attr(target_os = "netbsd", link_name = "__sigaction14")]
             pub fn sigaction(signum: c_int, act: *const sigaction, oldact: *mut sigaction)
                 -> c_int;
@@ -1809,7 +1809,7 @@ cfg_if! {
 
 cfg_if! {
     if #[cfg(target_os = "aix")] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn cfmakeraw(termios: *mut crate::termios) -> c_int;
             pub fn cfsetspeed(termios: *mut crate::termios, speed: crate::speed_t) -> c_int;
         }

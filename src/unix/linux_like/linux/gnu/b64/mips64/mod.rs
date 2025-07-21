@@ -142,7 +142,7 @@ s! {
         pub sa_flags: c_int,
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     pub struct stack_t {
@@ -918,7 +918,7 @@ pub const B4000000: crate::speed_t = 0o010017;
 
 pub const EHWPOISON: c_int = 168;
 
-extern "C" {
+unsafe extern "C" {
     pub fn sysctl(
         name: *mut c_int,
         namelen: c_int,

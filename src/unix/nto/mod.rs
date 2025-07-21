@@ -317,7 +317,7 @@ s! {
         pub gl_pathv: *mut *mut c_char,
         pub gl_offs: size_t,
         pub gl_flags: c_int,
-        pub gl_errfunc: extern "C" fn(*const c_char, c_int) -> c_int,
+        pub gl_errfunc: unsafe extern "C" fn(*const c_char, c_int) -> c_int,
 
         __unused1: *mut c_void,
         __unused2: *mut c_void,
@@ -2757,7 +2757,7 @@ safe_f! {
 
 cfg_if! {
     if #[cfg(not(target_env = "nto71_iosock"))] {
-        extern "C" {
+        unsafe extern "C" {
             pub fn sendmmsg(
                 sockfd: c_int,
                 msgvec: *mut crate::mmsghdr,
@@ -2773,7 +2773,7 @@ cfg_if! {
             ) -> c_int;
         }
     } else {
-        extern "C" {
+        unsafe extern "C" {
             pub fn sendmmsg(
                 sockfd: c_int,
                 msgvec: *mut crate::mmsghdr,
@@ -2796,7 +2796,7 @@ cfg_if! {
 // In QNX <=7.0, libregex functions were included in libc itself.
 #[link(name = "socket")]
 #[cfg_attr(not(target_env = "nto70"), link(name = "regex"))]
-extern "C" {
+unsafe extern "C" {
     pub fn sem_destroy(sem: *mut sem_t) -> c_int;
     pub fn sem_init(sem: *mut sem_t, pshared: c_int, value: c_uint) -> c_int;
     pub fn fdatasync(fd: c_int) -> c_int;
@@ -2936,7 +2936,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     pub fn globfree(pglob: *mut crate::glob_t);
@@ -3105,7 +3105,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn getitimer(which: c_int, curr_value: *mut crate::itimerval) -> c_int;
@@ -3337,10 +3337,10 @@ extern "C" {
 
 // Models the implementation in stdlib.h.  Ctest will fail if trying to use the
 // default symbol from libc
-pub unsafe fn atexit(cb: extern "C" fn()) -> c_int {
-    extern "C" {
+pub unsafe fn atexit(cb: unsafe extern "C" fn()) -> c_int {
+    unsafe extern "C" {
         static __dso_handle: *mut c_void;
-        pub fn __cxa_atexit(cb: extern "C" fn(), __arg: *mut c_void, __dso: *mut c_void) -> c_int;
+        pub fn __cxa_atexit(cb: unsafe extern "C" fn(), __arg: *mut c_void, __dso: *mut c_void) -> c_int;
     }
     __cxa_atexit(cb, 0 as *mut c_void, __dso_handle)
 }

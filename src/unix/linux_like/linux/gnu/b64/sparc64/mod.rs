@@ -19,7 +19,7 @@ s! {
         #[cfg(target_arch = "sparc64")]
         __reserved0: c_int,
         pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     pub struct statfs {
@@ -918,7 +918,7 @@ pub const SYS_process_mrelease: c_long = 448;
 pub const SYS_futex_waitv: c_long = 449;
 pub const SYS_set_mempolicy_home_node: c_long = 450;
 
-extern "C" {
+unsafe extern "C" {
     pub fn sysctl(
         name: *mut c_int,
         namelen: c_int,

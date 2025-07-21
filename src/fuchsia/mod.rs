@@ -298,7 +298,7 @@ s! {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
         pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     pub struct termios {
@@ -3419,7 +3419,7 @@ fn __MHDR_END(mhdr: *const msghdr) -> *mut c_uchar {
 
 #[link(name = "c")]
 #[link(name = "fdio")]
-extern "C" {}
+unsafe extern "C" {}
 
 #[cfg_attr(feature = "extra_traits", derive(Debug))]
 pub enum FILE {}
@@ -3438,7 +3438,7 @@ impl Clone for fpos_t {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn isalnum(c: c_int) -> c_int;
     pub fn isalpha(c: c_int) -> c_int;
     pub fn iscntrl(c: c_int) -> c_int;
@@ -3497,7 +3497,7 @@ extern "C" {
     pub fn abort() -> !;
     pub fn exit(status: c_int) -> !;
     pub fn _exit(status: c_int) -> !;
-    pub fn atexit(cb: extern "C" fn()) -> c_int;
+    pub fn atexit(cb: unsafe extern "C" fn()) -> c_int;
     pub fn system(s: *const c_char) -> c_int;
     pub fn getenv(s: *const c_char) -> *mut c_char;
 
@@ -4099,7 +4099,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     pub fn globfree(pglob: *mut crate::glob_t);
@@ -4201,7 +4201,7 @@ extern "C" {
         abstime: *const crate::timespec,
     ) -> c_int;
     pub fn clone(
-        cb: extern "C" fn(*mut c_void) -> c_int,
+        cb: unsafe extern "C" fn(*mut c_void) -> c_int,
         child_stack: *mut c_void,
         flags: c_int,
         arg: *mut c_void,
@@ -4291,7 +4291,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn dl_iterate_phdr(

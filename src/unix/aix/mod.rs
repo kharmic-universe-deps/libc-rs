@@ -317,7 +317,7 @@ s! {
         pub sigev_value: crate::sigval,
         pub sigev_signo: c_int,
         pub sigev_notify: c_int,
-        pub sigev_notify_function: extern "C" fn(val: crate::sigval),
+        pub sigev_notify_function: unsafe extern "C" fn(val: crate::sigval),
         pub sigev_notify_attributes: *mut pthread_attr_t,
     }
 
@@ -2564,13 +2564,13 @@ safe_f! {
 }
 
 #[link(name = "thread")]
-extern "C" {
+unsafe extern "C" {
     pub fn thr_kill(id: thread_t, sig: c_int) -> c_int;
     pub fn thr_self() -> thread_t;
 }
 
 #[link(name = "pthread")]
-extern "C" {
+unsafe extern "C" {
     pub fn pthread_atfork(
         prepare: Option<unsafe extern "C" fn()>,
         parent: Option<unsafe extern "C" fn()>,
@@ -2699,7 +2699,7 @@ extern "C" {
     pub fn pthread_create(
         thread: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        start_routine: extern "C" fn(*mut c_void) -> *mut c_void,
+        start_routine: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         arg: *mut c_void,
     ) -> c_int;
 
@@ -2822,7 +2822,7 @@ extern "C" {
 }
 
 #[link(name = "iconv")]
-extern "C" {
+unsafe extern "C" {
     pub fn iconv(
         cd: iconv_t,
         inbuf: *mut *mut c_char,
@@ -2834,7 +2834,7 @@ extern "C" {
     pub fn iconv_open(tocode: *const c_char, fromcode: *const c_char) -> iconv_t;
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn acct(filename: *mut c_char) -> c_int;
     #[link_name = "_posix_aio_cancel"]
     pub fn aio_cancel(fildes: c_int, aiocbp: *mut crate::aiocb) -> c_int;
@@ -2980,7 +2980,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     pub fn globfree(pglob: *mut crate::glob_t);
@@ -3022,7 +3022,7 @@ extern "C" {
     pub fn lseek64(fd: c_int, offset: off64_t, whence: c_int) -> off64_t;
     pub fn lstat64(path: *const c_char, buf: *mut stat64) -> c_int;
     pub fn madvise(addr: caddr_t, len: size_t, advice: c_int) -> c_int;
-    pub fn makecontext(ucp: *mut crate::ucontext_t, func: extern "C" fn(), argc: c_int, ...);
+    pub fn makecontext(ucp: *mut crate::ucontext_t, func: unsafe extern "C" fn(), argc: c_int, ...);
     pub fn mallinfo() -> crate::mallinfo;
     pub fn mallopt(param: c_int, value: c_int) -> c_int;
     pub fn memmem(

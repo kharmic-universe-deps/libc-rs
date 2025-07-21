@@ -249,7 +249,7 @@ pub const SIG_ACK: crate::sighandler_t = 4;
 #[cfg(all(target_env = "msvc", feature = "rustc-dep-of-std"))] // " if "
 #[link(name = "msvcrt", cfg(not(target_feature = "crt-static")))]
 #[link(name = "libcmt", cfg(target_feature = "crt-static"))]
-extern "C" {}
+unsafe extern "C" {}
 
 #[cfg_attr(feature = "extra_traits", derive(Debug))]
 pub enum FILE {}
@@ -275,14 +275,14 @@ cfg_if! {
             all(windows, target_env = "msvc"),
             link(name = "legacy_stdio_definitions")
         )]
-        extern "C" {
+        unsafe extern "C" {
             pub fn printf(format: *const c_char, ...) -> c_int;
             pub fn fprintf(stream: *mut FILE, format: *const c_char, ...) -> c_int;
         }
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn isalnum(c: c_int) -> c_int;
     pub fn isalpha(c: c_int) -> c_int;
     pub fn iscntrl(c: c_int) -> c_int;
@@ -342,7 +342,7 @@ extern "C" {
     pub fn abort() -> !;
     pub fn exit(status: c_int) -> !;
     pub fn _exit(status: c_int) -> !;
-    pub fn atexit(cb: extern "C" fn()) -> c_int;
+    pub fn atexit(cb: unsafe extern "C" fn()) -> c_int;
     pub fn system(s: *const c_char) -> c_int;
     pub fn getenv(s: *const c_char) -> *mut c_char;
 

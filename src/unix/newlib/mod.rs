@@ -177,7 +177,7 @@ s! {
     }
 
     pub struct sigaction {
-        pub sa_handler: extern "C" fn(arg1: c_int),
+        pub sa_handler: unsafe extern "C" fn(arg1: c_int),
         pub sa_mask: sigset_t,
         pub sa_flags: c_int,
     }
@@ -863,7 +863,7 @@ f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn getrlimit(resource: c_int, rlim: *mut crate::rlimit) -> c_int;
     pub fn setrlimit(resource: c_int, rlim: *const crate::rlimit) -> c_int;
 

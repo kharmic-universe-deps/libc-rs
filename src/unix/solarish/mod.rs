@@ -2510,7 +2510,7 @@ safe_f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn getrlimit(resource: c_int, rlim: *mut crate::rlimit) -> c_int;
     pub fn setrlimit(resource: c_int, rlim: *const crate::rlimit) -> c_int;
 
@@ -2586,7 +2586,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn pthread_attr_getstack(
@@ -2621,7 +2621,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
 
@@ -3135,7 +3135,7 @@ extern "C" {
 }
 
 #[link(name = "sendfile")]
-extern "C" {
+unsafe extern "C" {
     pub fn sendfile(out_fd: c_int, in_fd: c_int, off: *mut off_t, len: size_t) -> ssize_t;
     pub fn sendfilev(
         fildes: c_int,
@@ -3146,7 +3146,7 @@ extern "C" {
 }
 
 #[link(name = "lgrp")]
-extern "C" {
+unsafe extern "C" {
     pub fn lgrp_init(view: lgrp_view_t) -> lgrp_cookie_t;
     pub fn lgrp_fini(cookie: lgrp_cookie_t) -> c_int;
     pub fn lgrp_affinity_get(

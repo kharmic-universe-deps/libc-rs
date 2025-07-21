@@ -41,7 +41,7 @@ pub type sem_id = i32;
 pub type team_id = i32;
 pub type thread_id = i32;
 
-pub type thread_func = extern "C" fn(*mut c_void) -> status_t;
+pub type thread_func = unsafe extern "C" fn(*mut c_void) -> status_t;
 
 // kernel/image.h
 pub type image_id = i32;
@@ -411,8 +411,8 @@ s! {
         pub sequence: i32,
         pub init_order: i32,
         // FIXME(1.0): these should be made optional
-        pub init_routine: extern "C" fn(),
-        pub term_routine: extern "C" fn(),
+        pub init_routine: unsafe extern "C" fn(),
+        pub term_routine: unsafe extern "C" fn(),
         pub device: crate::dev_t,
         pub node: crate::ino_t,
         pub name: [c_char; crate::PATH_MAX as usize],
@@ -917,7 +917,7 @@ pub const B_MIME_STRING_TYPE: u32 = haiku_constant!('M', 'I', 'M', 'S');
 pub const B_ASCII_TYPE: u32 = haiku_constant!('T', 'E', 'X', 'T');
 pub const B_APP_IMAGE_SYMBOL: *const c_void = core::ptr::null();
 
-extern "C" {
+unsafe extern "C" {
     // kernel/OS.h
     pub fn create_area(
         name: *const c_char,
@@ -1048,7 +1048,7 @@ extern "C" {
     pub fn estimate_max_scheduling_latency(th: crate::thread_id) -> crate::bigtime_t;
     pub fn exit_thread(status: status_t);
     pub fn wait_for_thread(thread: thread_id, returnValue: *mut status_t) -> status_t;
-    pub fn on_exit_thread(callback: extern "C" fn(*mut c_void), data: *mut c_void) -> status_t;
+    pub fn on_exit_thread(callback: unsafe extern "C" fn(*mut c_void), data: *mut c_void) -> status_t;
 
     pub fn find_thread(name: *const c_char) -> thread_id;
 

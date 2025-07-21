@@ -35,7 +35,7 @@ pub type SceKernelCallbackFunction =
 
 pub type SceKernelThreadEntry = unsafe extern "C" fn(args: usize, argp: *mut c_void) -> i32;
 
-pub type PowerCallback = extern "C" fn(unknown: i32, power_info: i32);
+pub type PowerCallback = unsafe extern "C" fn(unknown: i32, power_info: i32);
 
 pub type IoPermissions = i32;
 
@@ -44,9 +44,9 @@ pub type UmdCallback = fn(unknown: i32, event: i32) -> i32;
 pub type SceMpegRingbufferCb =
     Option<unsafe extern "C" fn(data: *mut c_void, num_packets: i32, param: *mut c_void) -> i32>;
 
-pub type GuCallback = Option<extern "C" fn(id: i32, arg: *mut c_void)>;
+pub type GuCallback = Option<unsafe extern "C" fn(id: i32, arg: *mut c_void)>;
 pub type GuSwapBuffersCallback =
-    Option<extern "C" fn(display: *mut *mut c_void, render: *mut *mut c_void)>;
+    Option<unsafe extern "C" fn(display: *mut *mut c_void, render: *mut *mut c_void)>;
 
 pub type SceNetAdhocctlHandler =
     Option<unsafe extern "C" fn(flag: i32, error: i32, unknown: *mut c_void)>;
@@ -1418,9 +1418,9 @@ s! {
     // FIXME(1.0): This should not implement `PartialEq`
     #[allow(unpredictable_function_pointer_comparisons)]
     pub struct GeCallbackData {
-        pub signal_func: Option<extern "C" fn(id: i32, arg: *mut c_void)>,
+        pub signal_func: Option<unsafe extern "C" fn(id: i32, arg: *mut c_void)>,
         pub signal_arg: *mut c_void,
-        pub finish_func: Option<extern "C" fn(id: i32, arg: *mut c_void)>,
+        pub finish_func: Option<unsafe extern "C" fn(id: i32, arg: *mut c_void)>,
         pub finish_arg: *mut c_void,
     }
 
@@ -2557,7 +2557,7 @@ pub const UTILITY_HTMLVIEWER_ENABLE_ANALOG_HOLD: i32 = 0x000200;
 pub const UTILITY_HTMLVIEWER_ENABLE_FLASH: i32 = 0x000400;
 pub const UTILITY_HTMLVIEWER_DISABLE_LRTRIGGER: i32 = 0x000800;
 
-extern "C" {
+unsafe extern "C" {
     pub fn sceAudioChReserve(channel: i32, sample_count: i32, format: AudioFormat) -> i32;
     pub fn sceAudioChRelease(channel: i32) -> i32;
     pub fn sceAudioOutput(channel: i32, vol: i32, buf: *mut c_void) -> i32;
@@ -3149,7 +3149,7 @@ extern "C" {
     pub fn sceUsbGetDrvState(driver_name: *const u8) -> i32;
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn sceUsbCamSetupStill(param: *mut UsbCamSetupStillParam) -> i32;
     pub fn sceUsbCamSetupStillEx(param: *mut UsbCamSetupStillExParam) -> i32;
     pub fn sceUsbCamStillInputBlocking(buf: *mut u8, size: usize) -> i32;
@@ -3906,7 +3906,7 @@ extern "C" {
     pub fn sceNetAdhocGetPtpStat(size: *mut i32, stat: *mut SceNetAdhocPtpStat) -> i32;
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn sceNetAdhocMatchingInit(memsize: i32) -> i32;
     pub fn sceNetAdhocMatchingTerm() -> i32;
     pub fn sceNetAdhocMatchingCreate(
@@ -3970,7 +3970,7 @@ extern "C" {
     pub fn sceNetAdhocMatchingGetPoolStat(poolstat: *mut AdhocPoolStat) -> i32;
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn sceNetApctlInit(stack_size: i32, init_priority: i32) -> i32;
     pub fn sceNetApctlTerm() -> i32;
     pub fn sceNetApctlGetInfo(code: ApctlInfo, pinfo: *mut SceNetApctlInfo) -> i32;

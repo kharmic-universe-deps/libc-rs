@@ -20,7 +20,7 @@ s! {
         #[cfg(target_arch = "sparc64")]
         __reserved0: c_int,
         pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     pub struct statfs {
@@ -795,7 +795,7 @@ pub const REG_CR2: c_int = 22;
 unsafe extern "C" {
     pub fn getcontext(ucp: *mut ucontext_t) -> c_int;
     pub fn setcontext(ucp: *const ucontext_t) -> c_int;
-    pub fn makecontext(ucp: *mut ucontext_t, func: extern "C" fn(), argc: c_int, ...);
+    pub fn makecontext(ucp: *mut ucontext_t, func: unsafe extern "C" fn(), argc: c_int, ...);
     pub fn swapcontext(uocp: *mut ucontext_t, ucp: *const ucontext_t) -> c_int;
 }
 

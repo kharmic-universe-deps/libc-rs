@@ -164,7 +164,7 @@ s! {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
         pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     pub struct ipc_perm {
@@ -1441,7 +1441,7 @@ safe_f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn getrlimit(resource: c_int, rlim: *mut crate::rlimit) -> c_int;
     pub fn setrlimit(resource: c_int, rlim: *const crate::rlimit) -> c_int;
     pub fn strerror_r(errnum: c_int, buf: *mut c_char, buflen: size_t) -> c_int;
@@ -1499,7 +1499,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     pub fn globfree(pglob: *mut crate::glob_t);
@@ -1546,7 +1546,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
 

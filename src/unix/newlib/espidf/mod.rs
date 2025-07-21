@@ -97,11 +97,11 @@ pub const SIGHUP: c_int = 1;
 pub const SIGQUIT: c_int = 3;
 pub const NSIG: size_t = 32;
 
-extern "C" {
+unsafe extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(_: *mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(_: *mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
 

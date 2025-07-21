@@ -18,7 +18,7 @@ s! {
         pub sa_sigaction: crate::sighandler_t,
         __glibc_reserved0: c_int,
         pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
         pub sa_mask: crate::sigset_t,
     }
 
@@ -938,7 +938,7 @@ pub const SYS_futex_waitv: c_long = 449;
 pub const SYS_set_mempolicy_home_node: c_long = 450;
 pub const SYS_mseal: c_long = 462;
 
-extern "C" {
+unsafe extern "C" {
 
     pub fn sysctl(
         name: *mut c_int,
@@ -950,6 +950,6 @@ extern "C" {
     ) -> c_int;
     pub fn getcontext(ucp: *mut crate::ucontext_t) -> c_int;
     pub fn setcontext(ucp: *const crate::ucontext_t) -> c_int;
-    pub fn makecontext(ucp: *mut crate::ucontext_t, func: extern "C" fn(), argc: c_int, ...);
+    pub fn makecontext(ucp: *mut crate::ucontext_t, func: unsafe extern "C" fn(), argc: c_int, ...);
     pub fn swapcontext(uocp: *mut crate::ucontext_t, ucp: *const crate::ucontext_t) -> c_int;
 }

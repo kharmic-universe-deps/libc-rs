@@ -629,7 +629,7 @@ safe_f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     #[cfg_attr(
         all(target_os = "macos", target_arch = "x86"),
         link_name = "getrlimit$UNIX2003"
@@ -690,7 +690,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     #[cfg_attr(target_os = "netbsd", link_name = "__globfree30")]
@@ -857,7 +857,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn acct(filename: *const c_char) -> c_int;

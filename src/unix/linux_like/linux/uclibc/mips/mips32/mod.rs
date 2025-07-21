@@ -666,7 +666,7 @@ pub const SYS_futex_waitv: c_long = 4000 + 449;
 pub const SYS_set_mempolicy_home_node: c_long = 4000 + 450;
 
 #[link(name = "util")]
-extern "C" {
+unsafe extern "C" {
     pub fn sysctl(
         name: *mut c_int,
         namelen: c_int,
@@ -678,7 +678,7 @@ extern "C" {
     pub fn glob64(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut glob64_t,
     ) -> c_int;
     pub fn globfree64(pglob: *mut glob64_t);

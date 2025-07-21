@@ -3541,7 +3541,7 @@ f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn lutimes(file: *const c_char, times: *const crate::timeval) -> c_int;
 
     pub fn futimes(fd: c_int, times: *const crate::timeval) -> c_int;
@@ -3907,7 +3907,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn pthread_kill(__threadid: crate::pthread_t, __signo: c_int) -> c_int;
@@ -3959,7 +3959,7 @@ extern "C" {
     ) -> c_int;
     pub fn pthread_condattr_setpshared(attr: *mut pthread_condattr_t, pshared: c_int) -> c_int;
 
-    pub fn pthread_once(control: *mut pthread_once_t, routine: extern "C" fn()) -> c_int;
+    pub fn pthread_once(control: *mut pthread_once_t, routine: unsafe extern "C" fn()) -> c_int;
 
     pub fn pthread_barrierattr_init(attr: *mut crate::pthread_barrierattr_t) -> c_int;
     pub fn pthread_barrierattr_destroy(attr: *mut crate::pthread_barrierattr_t) -> c_int;
@@ -4431,7 +4431,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     pub fn globfree(pglob: *mut crate::glob_t);
@@ -4439,7 +4439,7 @@ extern "C" {
     pub fn glob64(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut glob64_t,
     ) -> c_int;
     pub fn globfree64(pglob: *mut glob64_t);

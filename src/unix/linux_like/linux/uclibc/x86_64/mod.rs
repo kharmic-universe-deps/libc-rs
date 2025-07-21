@@ -149,7 +149,7 @@ s! {
     pub struct sigaction {
         pub sa_handler: crate::sighandler_t,
         pub sa_flags: c_ulong,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
         pub sa_mask: crate::sigset_t,
     }
 

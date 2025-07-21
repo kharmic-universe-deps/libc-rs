@@ -1194,7 +1194,7 @@ unsafe extern "C" {
     pub fn glob64(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut glob64_t,
     ) -> c_int;
     #[cfg_attr(gnu_time_bits64, link_name = "__globfree64_time64")]

@@ -1607,7 +1607,7 @@ safe_f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn getrlimit(resource: c_int, rlim: *mut crate::rlimit) -> c_int;
     pub fn setrlimit(resource: c_int, rlim: *const crate::rlimit) -> c_int;
     pub fn getpriority(which: c_int, who: id_t) -> c_int;
@@ -1687,7 +1687,7 @@ extern "C" {
     pub fn pthread_create(
         thread: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn pthread_attr_getguardsize(
@@ -1745,7 +1745,7 @@ extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     pub fn globfree(pglob: *mut crate::glob_t);
@@ -2033,7 +2033,7 @@ extern "C" {
 }
 
 #[link(name = "bsd")]
-extern "C" {
+unsafe extern "C" {
     pub fn lutimes(file: *const c_char, times: *const crate::timeval) -> c_int;
     pub fn daemon(nochdir: c_int, noclose: c_int) -> c_int;
     pub fn forkpty(
@@ -2073,7 +2073,7 @@ extern "C" {
 }
 
 #[link(name = "gnu")]
-extern "C" {
+unsafe extern "C" {
     pub fn memmem(
         source: *const c_void,
         sourceLength: size_t,

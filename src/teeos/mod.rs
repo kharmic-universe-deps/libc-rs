@@ -49,7 +49,7 @@ pub type clockid_t = c_int;
 
 pub type suseconds_t = c_long;
 
-pub type once_fn = extern "C" fn() -> c_void;
+pub type once_fn = unsafe extern "C" fn() -> c_void;
 
 pub type pthread_once_t = c_int;
 
@@ -59,7 +59,7 @@ pub type wint_t = c_uint;
 
 pub type wctype_t = c_ulong;
 
-pub type cmpfunc = extern "C" fn(x: *const c_void, y: *const c_void) -> c_int;
+pub type cmpfunc = unsafe extern "C" fn(x: *const c_void, y: *const c_void) -> c_int;
 
 #[repr(align(16))]
 pub struct _CLongDouble(pub u128);
@@ -974,7 +974,7 @@ pub const PTHREAD_MUTEX_STALLED: c_int = 0;
 
 pub const PTHREAD_MUTEX_ROBUST: c_int = 1;
 
-extern "C" {
+unsafe extern "C" {
     // ---- ALLOC -----------------------------------------------------------------------------
     pub fn calloc(nobj: size_t, size: size_t) -> *mut c_void;
 
@@ -1087,7 +1087,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut pthread_t,
         attr: *const pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
 

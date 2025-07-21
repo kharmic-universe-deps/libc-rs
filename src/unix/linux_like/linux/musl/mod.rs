@@ -148,7 +148,7 @@ s! {
         pub sa_sigaction: crate::sighandler_t,
         pub sa_mask: crate::sigset_t,
         pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     // `mips*` targets swap the `s_errno` and `s_code` fields otherwise this struct is
@@ -833,7 +833,7 @@ cfg_if! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn sendmmsg(
         sockfd: c_int,
         msgvec: *mut crate::mmsghdr,

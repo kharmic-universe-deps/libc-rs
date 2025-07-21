@@ -3472,7 +3472,7 @@ safe_f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn setgrent();
     pub fn endgrent();
     pub fn getgrent() -> *mut crate::group;
@@ -3703,7 +3703,7 @@ extern "C" {
     pub fn pthread_spin_trylock(lock: *mut crate::pthread_spinlock_t) -> c_int;
     pub fn pthread_spin_unlock(lock: *mut crate::pthread_spinlock_t) -> c_int;
     pub fn clone(
-        cb: extern "C" fn(*mut c_void) -> c_int,
+        cb: unsafe extern "C" fn(*mut c_void) -> c_int,
         child_stack: *mut c_void,
         flags: c_int,
         arg: *mut c_void,
@@ -3814,7 +3814,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn __errno() -> *mut c_int;

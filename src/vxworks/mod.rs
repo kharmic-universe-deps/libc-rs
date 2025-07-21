@@ -1110,7 +1110,7 @@ f! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn isalnum(c: c_int) -> c_int;
     pub fn isalpha(c: c_int) -> c_int;
     pub fn iscntrl(c: c_int) -> c_int;
@@ -1168,7 +1168,7 @@ extern "C" {
     pub fn free(p: *mut c_void);
     pub fn abort() -> !;
     pub fn exit(status: c_int) -> !;
-    pub fn atexit(cb: extern "C" fn()) -> c_int;
+    pub fn atexit(cb: unsafe extern "C" fn()) -> c_int;
     pub fn system(s: *const c_char) -> c_int;
     pub fn getenv(s: *const c_char) -> *mut c_char;
 
@@ -1203,7 +1203,7 @@ extern "C" {
     pub fn memset(dest: *mut c_void, c: c_int, n: size_t) -> *mut c_void;
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn fprintf(stream: *mut crate::FILE, format: *const c_char, ...) -> c_int;
     pub fn printf(format: *const c_char, ...) -> c_int;
     pub fn snprintf(s: *mut c_char, n: size_t, format: *const c_char, ...) -> c_int;
@@ -1321,7 +1321,7 @@ extern "C" {
 
 }
 
-extern "C" {
+unsafe extern "C" {
     // stdlib.h
     pub fn memalign(block_size: size_t, size_arg: size_t) -> *mut c_void;
 
@@ -1381,7 +1381,7 @@ extern "C" {
     pub fn pthread_create(
         pThread: *mut crate::pthread_t,
         pAttr: *const crate::pthread_attr_t,
-        start_routine: extern "C" fn(*mut c_void) -> *mut c_void,
+        start_routine: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
 

@@ -19,7 +19,7 @@ s! {
         #[cfg(target_arch = "sparc64")]
         __reserved0: c_int,
         pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
+        pub sa_restorer: Option<unsafe extern "C" fn()>,
     }
 
     pub struct statfs {
@@ -947,7 +947,7 @@ pub const SYS_mseal: c_long = 462;
 pub const PROT_BTI: c_int = 0x10;
 pub const PROT_MTE: c_int = 0x20;
 
-extern "C" {
+unsafe extern "C" {
     pub fn sysctl(
         name: *mut c_int,
         namelen: c_int,
@@ -959,7 +959,7 @@ extern "C" {
 
     pub fn getcontext(ucp: *mut ucontext_t) -> c_int;
     pub fn setcontext(ucp: *const ucontext_t) -> c_int;
-    pub fn makecontext(ucp: *mut ucontext_t, func: extern "C" fn(), argc: c_int, ...);
+    pub fn makecontext(ucp: *mut ucontext_t, func: unsafe extern "C" fn(), argc: c_int, ...);
     pub fn swapcontext(uocp: *mut ucontext_t, ucp: *const ucontext_t) -> c_int;
 }
 

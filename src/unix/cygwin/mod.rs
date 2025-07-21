@@ -357,7 +357,7 @@ s! {
         pub sigev_value: sigval,
         pub sigev_signo: c_int,
         pub sigev_notify: c_int,
-        pub sigev_notify_function: Option<extern "C" fn(val: sigval)>,
+        pub sigev_notify_function: Option<unsafe extern "C" fn(val: sigval)>,
         pub sigev_notify_attributes: *mut pthread_attr_t,
     }
 
@@ -1935,7 +1935,7 @@ const_fn! {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn sigwait(set: *const sigset_t, sig: *mut c_int) -> c_int;
     pub fn sigwaitinfo(set: *const sigset_t, info: *mut siginfo_t) -> c_int;
 
@@ -2266,7 +2266,7 @@ extern "C" {
     pub fn pthread_create(
         native: *mut pthread_t,
         attr: *const pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
 

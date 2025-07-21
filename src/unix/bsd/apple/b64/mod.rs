@@ -124,7 +124,7 @@ pub const PTHREAD_ONCE_INIT: crate::pthread_once_t = crate::pthread_once_t {
     __opaque: [0; 8],
 };
 
-extern "C" {
+unsafe extern "C" {
     pub fn exchangedata(path1: *const c_char, path2: *const c_char, options: c_uint) -> c_int;
 }
 

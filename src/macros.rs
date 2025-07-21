@@ -302,7 +302,7 @@ cfg_if! {
             )*) => ($(
                 #[inline]
                 $(#[$attr])*
-                pub $($constness)* extern "C" fn $i($($arg: $argty),*) -> $ret
+                pub $($constness)* unsafe extern "C" fn $i($($arg: $argty),*) -> $ret
                     $body
             )*)
         }
@@ -344,7 +344,7 @@ cfg_if! {
             )*) => ($(
                 #[inline]
                 $(#[$attr])*
-                pub extern "C" fn $i($($arg: $argty),*) -> $ret
+                pub unsafe extern "C" fn $i($($arg: $argty),*) -> $ret
                     $body
             )*)
         }

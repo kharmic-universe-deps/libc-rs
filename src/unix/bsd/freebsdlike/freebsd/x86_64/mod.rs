@@ -84,7 +84,7 @@ s_no_extra_traits! {
     pub union __c_anonymous_elf64_auxv_union {
         pub a_val: c_long,
         pub a_ptr: *mut c_void,
-        pub a_fcn: extern "C" fn(),
+        pub a_fcn: unsafe extern "C" fn(),
     }
 
     pub struct Elf64_Auxinfo {

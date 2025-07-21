@@ -6460,7 +6460,7 @@ unsafe extern "C" {
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
-        errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
+        errfunc: Option<unsafe extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut crate::glob_t,
     ) -> c_int;
     #[cfg_attr(gnu_time_bits64, link_name = "__globfree64_time64")]
@@ -6606,7 +6606,7 @@ unsafe extern "C" {
     pub fn pthread_spin_trylock(lock: *mut crate::pthread_spinlock_t) -> c_int;
     pub fn pthread_spin_unlock(lock: *mut crate::pthread_spinlock_t) -> c_int;
     pub fn clone(
-        cb: extern "C" fn(*mut c_void) -> c_int,
+        cb: unsafe extern "C" fn(*mut c_void) -> c_int,
         child_stack: *mut c_void,
         flags: c_int,
         arg: *mut c_void,
@@ -6728,7 +6728,7 @@ unsafe extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
         attr: *const crate::pthread_attr_t,
-        f: extern "C" fn(*mut c_void) -> *mut c_void,
+        f: unsafe extern "C" fn(*mut c_void) -> *mut c_void,
         value: *mut c_void,
     ) -> c_int;
     pub fn dl_iterate_phdr(
@@ -6902,7 +6902,7 @@ unsafe extern "C" {
         longindex: *mut c_int,
     ) -> c_int;
 
-    pub fn pthread_once(control: *mut pthread_once_t, routine: extern "C" fn()) -> c_int;
+    pub fn pthread_once(control: *mut pthread_once_t, routine: unsafe extern "C" fn()) -> c_int;
 
     pub fn copy_file_range(
         fd_in: c_int,
